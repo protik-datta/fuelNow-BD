@@ -62,9 +62,11 @@ app.get("/", (req, res) => {
 });
 
 // -----------------------------------------------------
+const orderRoutes = require('./routes/order.routes');
+app.use('/api/v1/orders', orderRoutes);
 
 
-const errorHandler = require("./middleware/errorHandler");
+const errorHandler = require("./middleware/errorHandler.middleware");
 app.use(errorHandler);
 
 module.exports = app;
