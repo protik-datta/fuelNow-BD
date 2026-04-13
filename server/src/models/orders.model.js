@@ -47,6 +47,11 @@ const orderSchema = new mongoose.Schema(
       min: 1,
     },
 
+    customQuantity: {
+      type: Number,
+      min: 1,
+    },
+
     deliveryType: {
       type: String,
       required: true,

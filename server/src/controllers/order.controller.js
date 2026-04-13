@@ -11,6 +11,7 @@ exports.createOrder = async (req, res) => {
       address,
       fuelType,
       quantity,
+      customQuantity,
       deliveryType,
     } = req.body;
 
@@ -28,16 +29,38 @@ exports.createOrder = async (req, res) => {
       });
     }
 
-    const qty = Number(quantity);
-
-    if (!qty || qty <= 0) {
+    if (quantity && customQuantity) {
       return res.status(400).json({
         success: false,
-        message: "Invalid quantity",
+        message: "Provide either quantity or customQuantity, not both",
       });
     }
 
-    const productPrice = pricePerLitre * qty;
+    if (!quantity && !customQuantity) {
+      return res.status(400).json({
+        success: false,
+        message: "Quantity is required",
+      });
+    }
+
+    const finalQty =
+      customQuantity != null ? Number(customQuantity) : Number(quantity);
+
+    if (isNaN(finalQty) || finalQty < 1) {
+      return res.status(400).json({
+        success: false,
+        message: "Quantity must be at least 1 litre",
+      });
+    }
+
+    if (finalQty > 500) {
+      return res.status(400).json({
+        success: false,
+        message: "Quantity too large",
+      });
+    }
+
+    const productPrice = pricePerLitre * finalQty;
     const bookingFee = 300;
     const totalPayable = productPrice + bookingFee;
 
@@ -48,7 +71,7 @@ exports.createOrder = async (req, res) => {
       district: district?.trim(),
       address: address?.trim(),
       fuelType,
-      quantity: qty,
+      quantity: finalQty,
       deliveryType,
       productPrice,
       bookingFee,
