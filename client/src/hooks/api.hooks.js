@@ -1,19 +1,28 @@
-import { useMutation } from "@tanstack/react-query";
-import { createOrder } from "../services/api";
-import toast from "react-hot-toast";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createOrder, getOrderById } from "../services/api";
+import { showError, showSuccess } from "../utils/toast";
 
 export const useCreateOrder = () => {
   return useMutation({
     mutationFn: createOrder,
 
     onSuccess: (data) => {
-      toast.success("Order created successfully!");
+      showSuccess("Order created successfully!");
       console.log(data);
     },
 
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Failed to create order");
+      showError(error.response?.data?.message || "Failed to create order");
       console.log(error.message);
     },
+  });
+};
+
+export const useGetOrder = (orderId) => {
+  return useQuery({
+    queryKey: ["order", orderId],
+    queryFn: () => getOrderById(orderId),
+    enabled: false,
+    retry: false,
   });
 };

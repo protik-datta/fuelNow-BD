@@ -1,5 +1,15 @@
-import toast from "react-hot-toast";
-import axiosInstance from "../lib/axios";
+import { bdApi, axiosInstance } from "../lib/axios";
+import { showError } from "../utils/toast";
+
+export const getDivisions = async () => {
+  const res = await bdApi.get("/division");
+  return res.data;
+};
+
+export const getDistrictsByDivision = async (divisionId) => {
+  const res = await bdApi.get(`/district/${divisionId}`);
+  return res.data;
+};
 
 export const createOrder = async (orderData) => {
   try {
@@ -7,7 +17,17 @@ export const createOrder = async (orderData) => {
     return res.data;
   } catch (error) {
     console.log(error);
-    toast.error(error.response?.data?.message || "Failed to create order");
+    showError(error.response?.data?.message || "Failed to create order");
+    throw error;
+  }
+};
+
+export const getOrderById = async (orderId) => {
+  try {
+    const res = await axiosInstance.get(`/orders/${orderId}`);
+    return res.data;
+  } catch (error) {
+    showError(error.response?.data?.message || "Order not found");
     throw error;
   }
 };

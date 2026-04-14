@@ -84,7 +84,6 @@ exports.createOrder = async (req, res) => {
       success: true,
       message: "Order created successfully",
       data: order,
-      orderId: order.orderID,
     });
   } catch (error) {
     logger.error("Create order failed", error);

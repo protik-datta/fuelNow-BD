@@ -6,6 +6,8 @@ import Footer from "./components/common/Footer";
 import FloatingWhatsApp from "./components/common/FloatingWhatsApp";
 import { Toaster } from "react-hot-toast";
 import Booking from './pages/Booking';
+import Success from './pages/Success';
+import Tracking from './pages/Tracking';
 
 const App = () => {
   return (
@@ -14,6 +16,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/book" element={<Booking />} />
+        <Route path="/book/success" element={<Success />} />
+        <Route path="/track" element={<Tracking/>} />
       </Routes>
       <Footer />
 
