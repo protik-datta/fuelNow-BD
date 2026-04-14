@@ -1,11 +1,16 @@
 const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
 
 const orderSchema = new mongoose.Schema(
   {
     orderID: {
       type: String,
       unique: true,
-      default: () => "ORD-" + Date.now().toString(36),
+      default: () =>
+        "ORD-" +
+        Date.now().toString(36).toUpperCase() +
+        "-" +
+        uuidv4().split("-")[0].toUpperCase(),
     },
 
     name: {
