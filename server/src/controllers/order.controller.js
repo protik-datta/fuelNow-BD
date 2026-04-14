@@ -183,6 +183,24 @@ exports.updateOrderStatus = async (req, res) => {
   }
 };
 
+exports.deleteOrders = async (req,res) => {
+  try {
+    const deleteOrders = await Order.deleteMany({})
+
+    res.status(200).json({
+      success: true,
+      message: "Orders deleted successfully",
+      data: deleteOrders,
+    });
+  } catch (error) {
+    logger.error("Delete orders failed", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete orders",
+    });
+  }
+}
+
 exports.deleteOrder = async (req, res) => {
   try {
     const order = await Order.findOneAndDelete({ orderID: req.params.id });

@@ -12,6 +12,7 @@ const getOrderById =
   require("../controllers/order.controller").getOrderById;
 const updateOrderStatus =
   require("../controllers/order.controller").updateOrderStatus;
+const deleteOrders = require("../controllers/order.controller").deleteOrders;
 const deleteOrder = require("../controllers/order.controller").deleteOrder;
 
 const validate = require("../middleware/validate.middleware");
@@ -25,6 +26,8 @@ router.get("/", getAllOrders);
 router.get("/:id", getOrderById);
 // update order status
 router.patch("/:id", upload.none(), updateOrderStatus);
+// delete all orders
+router.delete("/", deleteOrders);
 // delete order
 router.delete("/:id", deleteOrder);
 
