@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
-const { v4: uuidv4 } = require("uuid");
 
 const emergencySchema = new mongoose.Schema(
   {
     emergencyOrderID: {
       type: String,
       unique: true,
-      default: () => uuidv4(),
+      default: () => "ORD-" + Date.now().toString(36),
     },
 
     name: {

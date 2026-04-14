@@ -35,7 +35,7 @@ exports.createEmergencyOrder = async (req, res) => {
       name: name.trim(),
       phone: phone.trim(),
       locationText: locationText.trim(),
-      mapLink: mapLink.trim() || null,
+      mapLink: mapLink ? mapLink.trim() : null,
       fuelType,
       quantity,
       urgency,
@@ -165,7 +165,7 @@ exports.updateEmergencyStatus = async (req, res) => {
 
 exports.deleteEmergencies = async (req, res) => {
   try {
-    const deleteOrders = await Emergency.deleteMany({})
+    const deleteOrders = await Emergency.deleteMany({});
 
     res.status(200).json({
       success: true,
@@ -183,9 +183,11 @@ exports.deleteEmergencies = async (req, res) => {
 
 exports.deleteEmergenciesById = async (req, res) => {
   try {
-    const order = await Emergency.findOneAndDelete({ emergencyOrderID: req.params.id });
+    const order = await Emergency.findOneAndDelete({
+      emergencyOrderID: req.params.id,
+    });
 
-    if(!order){
+    if (!order) {
       return res.status(404).json({
         success: false,
         message: "Emergency order not found",
@@ -196,7 +198,6 @@ exports.deleteEmergenciesById = async (req, res) => {
       success: true,
       message: "Emergency order deleted successfully",
     });
-    
   } catch (error) {
     logger.error(error.message);
     res.status(500).json({
@@ -204,4 +205,4 @@ exports.deleteEmergenciesById = async (req, res) => {
       message: "Failed to delete emergency order",
     });
   }
-}
+};
