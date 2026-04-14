@@ -26,8 +26,8 @@ router.get("/", getAllOrders);
 router.get("/:id", getOrderById);
 // update order status
 router.patch("/:id", upload.none(), updateOrderStatus);
-// delete all orders
-router.delete("/", deleteOrders);
+// delete all orders (DISABLED FOR SECURITY)
+// router.delete("/", deleteOrders);
 // delete order
 router.delete("/:id", deleteOrder);
 

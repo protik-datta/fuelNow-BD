@@ -1,226 +1,157 @@
 const Order = require("../models/orders.model");
-const logger = require("../utils/logger");
+const asyncHandler = require("../utils/asyncHandler");
 
-exports.createOrder = async (req, res) => {
-  try {
-    const {
-      name,
-      phone,
-      division,
-      district,
-      address,
-      fuelType,
-      quantity,
-      customQuantity,
-      deliveryType,
-    } = req.body;
-
-    const priceMap = {
-      petrol: 125,
-      octane: 150,
-    };
-
-    const pricePerLitre = priceMap[fuelType];
-
-    if (!pricePerLitre) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid fuel type",
-      });
-    }
-
-    if (quantity && customQuantity) {
-      return res.status(400).json({
-        success: false,
-        message: "Provide either quantity or customQuantity, not both",
-      });
-    }
-
-    if (!quantity && !customQuantity) {
-      return res.status(400).json({
-        success: false,
-        message: "Quantity is required",
-      });
-    }
-
-    const finalQty =
-      customQuantity != null ? Number(customQuantity) : Number(quantity);
-
-    if (isNaN(finalQty) || finalQty < 1) {
-      return res.status(400).json({
-        success: false,
-        message: "Quantity must be at least 1 litre",
-      });
-    }
-
-    if (finalQty > 500) {
-      return res.status(400).json({
-        success: false,
-        message: "Quantity too large",
-      });
-    }
-
-    const productPrice = pricePerLitre * finalQty;
-    const bookingFee = 300;
-    const totalPayable = productPrice + bookingFee;
-
-    const order = new Order({
-      name: name?.trim(),
-      phone: phone?.trim(),
-      division: division?.trim(),
-      district: district?.trim(),
-      address: address?.trim(),
-      fuelType,
-      quantity: finalQty,
-      deliveryType,
-      productPrice,
-      bookingFee,
-      remaining: totalPayable,
-    });
-
-    await order.save();
-
-    return res.status(201).json({
-      success: true,
-      message: "Order created successfully",
-      data: order,
-    });
-  } catch (error) {
-    logger.error("Create order failed", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to create order",
-    });
-  }
+const PRICE_MAP = {
+  petrol: 125,
+  octane: 150,
 };
 
-exports.getAllOrders = async (req, res) => {
-  try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+const BOOKING_FEE = 300;
 
-    res.status(200).json({
-      success: true,
-      message: "Orders retrieved successfully",
-      data: orders,
-    });
-  } catch (error) {
-    logger.error("Get all orders failed", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to retrieve orders",
-    });
+// @desc    Create new order
+// @route   POST /api/v1/orders
+exports.createOrder = asyncHandler(async (req, res, next) => {
+  const {
+    name,
+    phone,
+    division,
+    district,
+    address,
+    fuelType,
+    quantity,
+    customQuantity,
+    deliveryType,
+  } = req.body;
+
+  const pricePerLitre = PRICE_MAP[fuelType];
+
+  if (!pricePerLitre) {
+    const error = new Error("Invalid fuel type");
+    error.statusCode = 400;
+    return next(error);
   }
-};
 
-exports.getOrderById = async (req, res) => {
-  try {
-    const order = await Order.findOne({ orderID: req.params.id });
+  const finalQty = customQuantity != null ? Number(customQuantity) : Number(quantity);
 
-    if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: "Order not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Order retrieved successfully",
-      data: order,
-    });
-  } catch (error) {
-    logger.error("Get order by ID failed", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to retrieve order",
-    });
+  if (isNaN(finalQty) || finalQty < 1) {
+    const error = new Error("Quantity must be at least 1 litre");
+    error.statusCode = 400;
+    return next(error);
   }
-};
 
-exports.updateOrderStatus = async (req, res) => {
-  try {
-    const { status } = req.body;
+  const productPrice = pricePerLitre * finalQty;
+  const totalPayable = productPrice + BOOKING_FEE;
 
-    const validStatuses = [
-      "pending",
-      "confirmed",
-      "in_transit",
-      "delivered",
-      "cancelled",
-    ];
+  const order = new Order({
+    name: name?.trim(),
+    phone: phone?.trim(),
+    division: division?.trim(),
+    district: district?.trim(),
+    address: address?.trim(),
+    fuelType,
+    quantity: finalQty,
+    deliveryType,
+    productPrice,
+    bookingFee: BOOKING_FEE,
+    remaining: totalPayable,
+  });
 
-    if (!validStatuses.includes(status)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid status value",
-      });
-    }
+  await order.save();
 
-    const order = await Order.findOneAndUpdate(
-      { orderID: req.params.id },
-      { status },
-      { new: true },
-    );
+  res.status(201).json({
+    success: true,
+    message: "Order created successfully",
+    data: order,
+  });
+});
 
-    if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: "Order not found",
-      });
-    }
+// @desc    Get all orders
+// @route   GET /api/v1/orders
+exports.getAllOrders = asyncHandler(async (req, res, next) => {
+  const orders = await Order.find().sort({ createdAt: -1 });
 
-    return res.status(200).json({
-      success: true,
-      message: "Order status updated successfully",
-      data: order,
-    });
-  } catch (error) {
-    logger.error("Update order status failed", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to update order status",
-    });
+  res.status(200).json({
+    success: true,
+    message: "Orders retrieved successfully",
+    data: orders,
+  });
+});
+
+// @desc    Get order by ID
+// @route   GET /api/v1/orders/:id
+exports.getOrderById = asyncHandler(async (req, res, next) => {
+  const order = await Order.findOne({ orderID: req.params.id });
+
+  if (!order) {
+    const error = new Error("Order not found");
+    error.statusCode = 404;
+    return next(error);
   }
-};
 
-exports.deleteOrders = async (req,res) => {
-  try {
-    const deleteOrders = await Order.deleteMany({})
+  res.status(200).json({
+    success: true,
+    message: "Order retrieved successfully",
+    data: order,
+  });
+});
 
-    res.status(200).json({
-      success: true,
-      message: "Orders deleted successfully",
-      data: deleteOrders,
-    });
-  } catch (error) {
-    logger.error("Delete orders failed", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to delete orders",
-    });
+// @desc    Update order status
+// @route   PATCH /api/v1/orders/:id
+exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
+  const { status } = req.body;
+  const validStatuses = ["pending", "confirmed", "in_transit", "delivered", "cancelled"];
+
+  if (!validStatuses.includes(status)) {
+    const error = new Error("Invalid status value");
+    error.statusCode = 400;
+    return next(error);
   }
-}
 
-exports.deleteOrder = async (req, res) => {
-  try {
-    const order = await Order.findOneAndDelete({ orderID: req.params.id });
+  const order = await Order.findOneAndUpdate(
+    { orderID: req.params.id },
+    { status },
+    { new: true },
+  );
 
-    if(!order){
-      return res.status(404).json({
-        success: false,
-        message: "Order not found",
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Order deleted successfully",
-    });
-  } catch (error) {
-    logger.error("Delete order failed", error);
-    return res.status(500).json({
-      success: false,
-      message: "Failed to delete order",
-    });
+  if (!order) {
+    const error = new Error("Order not found");
+    error.statusCode = 404;
+    return next(error);
   }
-};
+
+  res.status(200).json({
+    success: true,
+    message: "Order status updated successfully",
+    data: order,
+  });
+});
+
+// @desc    Delete all orders (DANGEROUS)
+// @route   DELETE /api/v1/orders
+exports.deleteOrders = asyncHandler(async (req, res, next) => {
+  // Check for admin/secret header in production if ever needed
+  const result = await Order.deleteMany({});
+
+  res.status(200).json({
+    success: true,
+    message: "Orders deleted successfully",
+    data: result,
+  });
+});
+
+// @desc    Delete single order
+// @route   DELETE /api/v1/orders/:id
+exports.deleteOrder = asyncHandler(async (req, res, next) => {
+  const order = await Order.findOneAndDelete({ orderID: req.params.id });
+
+  if (!order) {
+    const error = new Error("Order not found");
+    error.statusCode = 404;
+    return next(error);
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Order deleted successfully",
+  });
+});

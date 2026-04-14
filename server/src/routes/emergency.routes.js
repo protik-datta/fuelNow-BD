@@ -29,8 +29,8 @@ router.get("/", getAllEmergencies);
 router.get("/:id", getEmergenciesById);
 // update emergency order status
 router.patch("/:id", upload.none(), updateEmergencyStatus);
-// delete all emergency orders
-router.delete("/", deleteEmergencies);
+// delete all emergency orders (DISABLED FOR SECURITY)
+// router.delete("/", deleteEmergencies);
 // delete emergency order by ID
 router.delete("/:id", deleteEmergenciesById);
 
