@@ -90,3 +90,5 @@
 2026-04-14 16:28:48 [INFO]: [0mGET /api/v1/orders/ORD-MNYHB0EI-8B35F8AA [32m200[0m 108.349 ms - 445[0m
 2026-04-14 16:29:16 [INFO]: [0mPOST /api/v1/emergencies [32m201[0m 135.425 ms - 471[0m
 2026-04-14 16:29:27 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYHBROI-2A3A5E7A [32m200[0m 106.226 ms - 471[0m
+2026-04-14 16:52:26 [INFO]: server is running on port 8000
+2026-04-14 16:52:27 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
