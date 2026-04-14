@@ -1,11 +1,12 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateEmergencyOrder } from "../hooks/api.hooks";
-import { showSuccess, showError } from "../utils/toast";
+import { showSuccess, showError, showLoading } from "../utils/toast";
+import { toast } from "react-hot-toast";
 import { pageAnim } from "../lib/Shared";
 import Container from "../components/common/Container";
 import { motion } from "framer-motion";
 import { FormField, Input, Select } from "../services/fromInputs";
+import { useState } from 'react';
 
 const PRICE_MAP = { petrol: 125, octane: 150 };
 const DELIVERY_CHARGE = 300;
@@ -68,14 +69,18 @@ const Emergency = () => {
       note: form.note.trim(),
     };
 
+    const toastId = showLoading("অর্ডার সাবমিট হচ্ছে...");
+
     mutate(payload, {
       onSuccess: (data) => {
+        toast.dismiss(toastId);
         showSuccess("ইমার্জেন্সি অর্ডার সফলভাবে স্থাপন করা হয়েছে");
         navigate(
           `success?orderId=${data.data.emergencyOrderID}&price=${data.data.totalPrice}&mapLink=${encodeURIComponent(data.data.mapLink)}`,
         );
       },
       onError: () => {
+        toast.dismiss(toastId);
         showError("অর্ডার করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
       },
     });

@@ -76,3 +76,11 @@
 2026-04-14 15:58:36 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
 2026-04-14 15:59:30 [INFO]: [0mPOST /api/v1/emergencies [32m201[0m 83.171 ms - 745[0m
 2026-04-14 15:59:46 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYG9HSQ-9D667F1D [32m200[0m 59.290 ms - 745[0m
+2026-04-14 16:10:59 [INFO]: server is running on port 8000
+2026-04-14 16:11:00 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-01.f8nebzl.mongodb.net
+2026-04-14 16:13:05 [INFO]: [0mPOST /api/v1/orders [32m201[0m 183.970 ms - 443[0m
+2026-04-14 16:13:16 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYGQYQU-43BA1054 [33m404[0m 96.337 ms - 55[0m
+2026-04-14 16:13:19 [INFO]: [0mGET /api/v1/orders/ORD-MNYGQYQU-43BA1054 [32m200[0m 401.030 ms - 445[0m
+2026-04-14 16:14:01 [INFO]: [0mPOST /api/v1/emergencies [32m201[0m 96.295 ms - 499[0m
+2026-04-14 16:14:11 [INFO]: [0mGET /api/v1/orders/ORD-MNYGS5WI-91E2D459 [33m404[0m 50.748 ms - 45[0m
+2026-04-14 16:14:15 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYGS5WI-91E2D459 [32m200[0m 57.370 ms - 499[0m

@@ -1,12 +1,13 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateOrder } from "../hooks/api.hooks";
-import { showSuccess, showError } from "../utils/toast";
-import { useDistricts, useDivisions } from "../hooks/location.hook";
+import { showSuccess, showError, showLoading } from "../utils/toast";
+import { toast } from "react-hot-toast";
+import { useDistricts, useDivisions } from "../hooks/location.hooks";
 import { pageAnim } from "../lib/Shared";
 import Container from "../components/common/Container";
 import { motion } from "framer-motion";
 import { FormField, Input, Select } from "../services/fromInputs";
+import { useState } from 'react';
 
 const PRICE_MAP = { petrol: 125, octane: 150 };
 const BOOKING_FEE = 300;
@@ -101,14 +102,18 @@ const Booking = () => {
         : { quantity: Number(form.quantity) }),
     };
 
+    const toastId = showLoading("অর্ডার সাবমিট হচ্ছে...");
+
     mutate(payload, {
       onSuccess: (data) => {
+        toast.dismiss(toastId);
         showSuccess("অর্ডার সফলভাবে স্থাপন করা হয়েছে");
         navigate(
           `success?orderId=${data.data.orderID}&price=${data.data.remaining}`,
         );
       },
       onError: () => {
+        toast.dismiss(toastId);
         showError("অর্ডার করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
       },
     });

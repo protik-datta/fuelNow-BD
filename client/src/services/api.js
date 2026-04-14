@@ -1,5 +1,4 @@
 import { bdApi, axiosInstance } from "../lib/axios";
-import { showError } from "../utils/toast";
 
 export const getDivisions = async () => {
   const res = await bdApi.get("/division");
@@ -16,8 +15,6 @@ export const createOrder = async (orderData) => {
     const res = await axiosInstance.post("/orders", orderData);
     return res.data;
   } catch (error) {
-    console.log(error);
-    showError(error.response?.data?.message || "Failed to create order");
     throw error;
   }
 };
@@ -27,7 +24,6 @@ export const getOrderById = async (orderId) => {
     const res = await axiosInstance.get(`/orders/${orderId}`);
     return res.data;
   } catch (error) {
-    showError(error.response?.data?.message || "Order not found");
     throw error;
   }
 };
@@ -37,10 +33,6 @@ export const createEmergencyOrder = async (emergencyData) => {
     const res = await axiosInstance.post("/emergencies", emergencyData);
     return res.data;
   } catch (error) {
-    console.log(error);
-    showError(
-      error.response?.data?.message || "Failed to create emergency order"
-    );
     throw error;
   }
 };
@@ -50,7 +42,6 @@ export const getEmergencyById = async (emergencyId) => {
     const res = await axiosInstance.get(`/emergencies/${emergencyId}`);
     return res.data;
   } catch (error) {
-    showError(error.response?.data?.message || "Emergency order not found");
     throw error;
   }
 }

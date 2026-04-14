@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   Package,
-  Loader2,
   AlertCircle,
   CheckCircle2,
   Truck,
@@ -14,6 +13,7 @@ import {
   ExternalLink,
   FileText,
 } from "lucide-react";
+import Loader from "../utils/Loader";
 import { pageAnim } from "../lib/Shared";
 import Container from "../components/common/Container";
 import { useGetOrder, useGetEmergencyOrder } from "../hooks/api.hooks";
@@ -265,8 +265,6 @@ export default function Tracking() {
   const isError = orderType === "normal" ? normalError : emergencyError;
   const order = orderType === "normal" ? normalData?.data : emergencyData?.data;
 
-  console.log(order)
-
   const handleSearch = (e) => {
     e?.preventDefault();
     const trimmed = inputId.trim();
@@ -351,7 +349,7 @@ export default function Tracking() {
               }`}
             >
               {isFetching ? (
-                <Loader2 size={16} className="animate-spin" />
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <Search size={16} />
               )}
@@ -370,12 +368,7 @@ export default function Tracking() {
                 exit={{ opacity: 0 }}
                 className="text-center py-16 text-muted text-sm"
               >
-                <Loader2
-                  size={32}
-                  className={`animate-spin mx-auto mb-3 ${
-                    isEmergency ? "text-red-500" : "text-emerald-500"
-                  }`}
-                />
+                <Loader />
                 অর্ডার খোঁজা হচ্ছে...
               </motion.div>
             )}
