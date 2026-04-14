@@ -53,7 +53,7 @@ const emergencySchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 1,
-      max: 10,
+      max: 50,
     },
 
     urgency: {
@@ -71,13 +71,11 @@ const emergencySchema = new mongoose.Schema(
     pricePerLitre: {
       type: Number,
       required: true,
-      select: false,
     },
 
     totalPrice: {
       type: Number,
       required: true,
-      select: false,
     },
 
     deliveryCharge: {

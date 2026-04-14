@@ -4,3 +4,75 @@
 2026-04-14 13:27:14 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
 2026-04-14 13:27:42 [INFO]: server is running on port 8000
 2026-04-14 13:27:43 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
+2026-04-14 13:29:13 [INFO]: [0mPOST /api/v1/orders [32m201[0m 78.686 ms - 467[0m
+2026-04-14 13:29:24 [INFO]: [0mGET /api/v1/orders/ORD-MNYAW8F2-BE588FFF [32m200[0m 67.617 ms - 469[0m
+2026-04-14 15:12:08 [INFO]: server is running on port 8000
+2026-04-14 15:12:09 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
+2026-04-14 15:12:55 [INFO]: [0mPOST /api/v1/emergencies [33m400[0m 5.193 ms - 46[0m
+2026-04-14 15:13:19 [INFO]: server is running on port 8000
+2026-04-14 15:13:20 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
+2026-04-14 15:13:21 [INFO]: server is running on port 8000
+2026-04-14 15:13:22 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-01.f8nebzl.mongodb.net
+2026-04-14 15:13:26 [INFO]: [0mPOST /api/v1/emergencies [33m400[0m 5.971 ms - 46[0m
+2026-04-14 15:14:16 [INFO]: [0mPOST /api/v1/emergencies [33m400[0m 2.003 ms - 46[0m
+2026-04-14 15:14:28 [INFO]: [0mPOST /api/v1/emergencies [33m400[0m 0.831 ms - 46[0m
+2026-04-14 15:15:58 [ERROR]: Emergency validation failed: quantity: Path `quantity` (50) is more than maximum allowed value (10).
+2026-04-14 15:15:58 [INFO]: [0mPOST /api/v1/emergencies [31m500[0m 14.563 ms - 62[0m
+2026-04-14 15:16:10 [ERROR]: Emergency validation failed: quantity: Path `quantity` (50) is more than maximum allowed value (10).
+2026-04-14 15:16:10 [INFO]: [0mPOST /api/v1/emergencies [31m500[0m 4.055 ms - 62[0m
+2026-04-14 15:17:49 [INFO]: server is running on port 8000
+2026-04-14 15:17:50 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
+2026-04-14 15:17:50 [INFO]: [0mPOST /api/v1/emergencies [32m201[0m 1466.142 ms - 508[0m
+2026-04-14 15:27:25 [INFO]: [0mPOST /api/v1/emergencies [32m201[0m 120.899 ms - 504[0m
+2026-04-14 15:32:43 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYF48F9-ADF99618 [32m200[0m 144.270 ms - 466[0m
+2026-04-14 15:36:23 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYERVSQ-A8E57545 [32m200[0m 181.066 ms - 470[0m
+2026-04-14 15:36:48 [INFO]: [0mGET /api/v1/orders/ORD-MNYAW8F2-BE588FFF [36m304[0m 68.980 ms - -[0m
+2026-04-14 15:37:08 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYERVSQ-A8E57545 [36m304[0m 56.041 ms - -[0m
+2026-04-14 15:39:22 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYERVSQ-A8E57545 [36m304[0m 129.594 ms - -[0m
+2026-04-14 15:39:24 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYERVSQ-A8E57545 [36m304[0m 62.293 ms - -[0m
+2026-04-14 15:40:37 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYERVSQ-A8E57545 [36m304[0m 58.622 ms - -[0m
+2026-04-14 15:41:38 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYERVSQ-A8E57545 [36m304[0m 90.233 ms - -[0m
+2026-04-14 15:42:19 [INFO]: server is running on port 8000
+2026-04-14 15:42:20 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-01.f8nebzl.mongodb.net
+2026-04-14 15:42:22 [INFO]: server is running on port 8000
+2026-04-14 15:42:23 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
+2026-04-14 15:42:39 [INFO]: server is running on port 8000
+2026-04-14 15:42:40 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
+2026-04-14 15:42:40 [INFO]: server is running on port 8000
+2026-04-14 15:42:42 [INFO]: server is running on port 8000
+2026-04-14 15:42:42 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
+2026-04-14 15:42:43 [INFO]: server is running on port 8000
+2026-04-14 15:42:44 [INFO]: server is running on port 8000
+2026-04-14 15:42:45 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-01.f8nebzl.mongodb.net
+2026-04-14 15:42:48 [INFO]: server is running on port 8000
+2026-04-14 15:42:49 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
+2026-04-14 15:42:51 [INFO]: server is running on port 8000
+2026-04-14 15:42:54 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
+2026-04-14 15:42:58 [INFO]: server is running on port 8000
+2026-04-14 15:42:58 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-01.f8nebzl.mongodb.net
+2026-04-14 15:43:00 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYERVSQ-A8E57545 [36m304[0m 107.616 ms - -[0m
+2026-04-14 15:43:49 [INFO]: [0mPOST /api/v1/emergencies [32m201[0m 116.089 ms - 550[0m
+2026-04-14 15:46:06 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYFPB80-9B863419 [32m200[0m 102.250 ms - 512[0m
+2026-04-14 15:51:02 [INFO]: server is running on port 8000
+2026-04-14 15:51:03 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
+2026-04-14 15:51:13 [INFO]: [0mGET /api/v1/orders/ORD-MNYFPB80-9B863419 [33m404[0m 59.886 ms - 45[0m
+2026-04-14 15:52:09 [INFO]: server is running on port 8000
+2026-04-14 15:52:10 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
+2026-04-14 15:52:13 [INFO]: server is running on port 8000
+2026-04-14 15:52:13 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
+2026-04-14 15:52:21 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYFPB80-9B863419 [32m200[0m 105.124 ms - 550[0m
+2026-04-14 15:52:53 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYFPB80-9B863419 [36m304[0m 49.331 ms - -[0m
+2026-04-14 15:53:49 [INFO]: [0mPOST /api/v1/emergencies [32m201[0m 75.009 ms - 554[0m
+2026-04-14 15:53:57 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYG26HI-87677652 [32m200[0m 50.266 ms - 554[0m
+2026-04-14 15:55:18 [INFO]: server is running on port 8000
+2026-04-14 15:55:19 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
+2026-04-14 15:55:31 [INFO]: server is running on port 8000
+2026-04-14 15:55:31 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-00.f8nebzl.mongodb.net
+2026-04-14 15:57:00 [ERROR]: Emergency is not defined
+2026-04-14 15:57:00 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYG26HI-87677652 [31m500[0m 2.909 ms - 61[0m
+2026-04-14 15:58:02 [ERROR]: Emergency is not defined
+2026-04-14 15:58:02 [INFO]: [0mPOST /api/v1/emergencies [31m500[0m 5.100 ms - 62[0m
+2026-04-14 15:58:35 [INFO]: server is running on port 8000
+2026-04-14 15:58:36 [INFO]: 📦 MongoDB Connected: ac-xffjekz-shard-00-02.f8nebzl.mongodb.net
+2026-04-14 15:59:30 [INFO]: [0mPOST /api/v1/emergencies [32m201[0m 83.171 ms - 745[0m
+2026-04-14 15:59:46 [INFO]: [0mGET /api/v1/emergencies/ORD-MNYG9HSQ-9D667F1D [32m200[0m 59.290 ms - 745[0m

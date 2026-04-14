@@ -31,3 +31,26 @@ export const getOrderById = async (orderId) => {
     throw error;
   }
 };
+
+export const createEmergencyOrder = async (emergencyData) => {
+  try {
+    const res = await axiosInstance.post("/emergencies", emergencyData);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    showError(
+      error.response?.data?.message || "Failed to create emergency order"
+    );
+    throw error;
+  }
+};
+
+export const getEmergencyById = async (emergencyId) => {
+  try {
+    const res = await axiosInstance.get(`/emergencies/${emergencyId}`);
+    return res.data;
+  } catch (error) {
+    showError(error.response?.data?.message || "Emergency order not found");
+    throw error;
+  }
+}

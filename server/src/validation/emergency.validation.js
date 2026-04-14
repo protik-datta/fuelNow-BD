@@ -11,7 +11,7 @@ const emergencyOrderSchema = z.object({
   quantity: z.coerce
     .number({ invalid_type_error: "Quantity must be a number" })
     .min(1, "Minimum 1 liter")
-    .max(10, "Maximum 10 liters"),
+    .max(50, "Maximum 50 liters"),
   urgency: z.enum(["low", "medium", "high"], {
     errorMap: () => ({ message: "Urgency must be 'low', 'medium', or 'high'" }),
   }),
