@@ -14,13 +14,7 @@ const logger = require("./utils/logger");
 const app = express();
 
 // cors
-const allowedOrigin = process.env.ALLOWED_ORIGIN || "http://localhost:5173";
-app.use(
-  cors({
-    origin: allowedOrigin,
-    credentials: true,
-  }),
-);
+app.use(cors());
 
 // security
 app.use(helmet());
