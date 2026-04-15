@@ -1,4 +1,4 @@
-import { axiosInstance } from '../../../client/src/lib/axios'
+import { axiosInstance } from '../lib/axios';
 import { showError } from '../utils/toast';
 
 // orders api
