@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { FiGrid, FiShoppingCart, FiAlertTriangle, FiMenu, FiX, FiLogOut, FiUser } from 'react-icons/fi';
 import { MdLocalGasStation } from 'react-icons/md';
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAdminAuth');
+    navigate('/login');
+  };
 
   const navItems = [
     { name: 'Dashboard', path: '/', icon: <FiGrid className="w-5 h-5" /> },
@@ -62,7 +68,10 @@ const AdminLayout = () => {
         </nav>
 
         <div className="p-4 border-t border-gray-100">
-          <button className="flex items-center space-x-3 text-gray-500 hover:text-red-600 hover:bg-red-50 w-full px-3 py-2.5 rounded-xl transition-colors duration-200">
+          <button 
+            onClick={handleLogout}
+            className="flex items-center space-x-3 text-gray-500 hover:text-red-600 hover:bg-red-50 w-full px-3 py-2.5 rounded-xl transition-colors duration-200"
+          >
             <FiLogOut className="w-5 h-5" />
             <span className="font-medium">Logout</span>
           </button>

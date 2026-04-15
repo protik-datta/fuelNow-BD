@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useEmergencies, useUpdateEmergencyStatus, useDeleteEmergency } from '../hooks/api.hooks';
+import DeleteModal from '../utils/DeleteModal';
 import { FiSearch, FiEdit2, FiTrash2, FiMapPin, FiPhone } from 'react-icons/fi';
 
 const Emergencies = () => {
@@ -7,31 +8,39 @@ const Emergencies = () => {
   const updateStatusMutation = useUpdateEmergencyStatus();
   const deleteEmergencyMutation = useDeleteEmergency();
 
-  console.log(emergenciesData)
-
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [emergencyToDelete, setEmergencyToDelete] = useState(null);
 
   const emergencies = Array.isArray(emergenciesData?.data) ? emergenciesData.data : [];
 
-  const filteredEmergencies = emergencies.filter(emergency => {
-    const matchesSearch =
-      emergency._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emergency.phone?.includes(searchTerm) ||
-      emergency.location?.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredEmergencies = useMemo(() => {
+    return emergencies.filter(emergency => {
+      const matchesSearch =
+        emergency._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        emergency.phone?.includes(searchTerm) ||
+        emergency.location?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = statusFilter === 'all' || emergency.status === statusFilter;
+      const matchesStatus = statusFilter === 'all' || emergency.status === statusFilter;
 
-    return matchesSearch && matchesStatus;
-  });
+      return matchesSearch && matchesStatus;
+    });
+  }, [emergencies, searchTerm, statusFilter]);
 
   const handleStatusChange = (emergencyId, newStatus) => {
     updateStatusMutation.mutate({ emergencyId, status: newStatus });
   };
 
-  const handleDelete = (emergencyId) => {
-    if (window.confirm('Are you sure you want to delete this emergency record?')) {
-      deleteEmergencyMutation.mutate(emergencyId);
+  const handleDeleteClick = (emergencyId) => {
+    setEmergencyToDelete(emergencyId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (emergencyToDelete) {
+      deleteEmergencyMutation.mutate(emergencyToDelete);
     }
   };
 
@@ -191,7 +200,7 @@ const Emergencies = () => {
 
                         <button
                           onClick={() =>
-                            handleDelete(
+                            handleDeleteClick(
                               emergency.emergencyOrderID || emergency._id,
                             )
                           }
@@ -217,6 +226,14 @@ const Emergencies = () => {
           </table>
         </div>
       </div>
+      
+      <DeleteModal 
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Delete Emergency Request"
+        message="Are you sure you want to delete this emergency request? This action cannot be undone."
+      />
     </div>
   );
 };

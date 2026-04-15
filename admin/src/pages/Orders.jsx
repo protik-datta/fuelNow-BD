@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useOrders, useUpdateOrderStatus, useDeleteOrder } from '../hooks/api.hooks';
+import DeleteModal from '../utils/DeleteModal';
 import { FiSearch, FiEdit2, FiTrash2, FiMoreVertical } from 'react-icons/fi';
 
 const Orders = () => {
@@ -7,31 +8,39 @@ const Orders = () => {
   const updateStatusMutation = useUpdateOrderStatus();
   const deleteOrderMutation = useDeleteOrder();
 
-  console.log(ordersData)
-
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState(null);
+
   const orders = Array.isArray(ordersData?.data) ? ordersData.data : [];
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch =
-      order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.customerPhone?.includes(searchTerm) ||
-      order.customerName?.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredOrders = useMemo(() => {
+    return orders.filter(order => {
+      const matchesSearch =
+        order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.customerPhone?.includes(searchTerm) ||
+        order.customerName?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+      const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
 
-    return matchesSearch && matchesStatus;
-  });
+      return matchesSearch && matchesStatus;
+    });
+  }, [orders, searchTerm, statusFilter]);
 
   const handleStatusChange = (orderId, newStatus) => {
     updateStatusMutation.mutate({ orderId, status: newStatus });
   };
 
-  const handleDelete = (orderId) => {
-    if (window.confirm('Are you sure you want to delete this order?')) {
-      deleteOrderMutation.mutate(orderId);
+  const handleDeleteClick = (orderId) => {
+    setOrderToDelete(orderId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (orderToDelete) {
+      deleteOrderMutation.mutate(orderToDelete);
     }
   };
 
@@ -173,7 +182,7 @@ const Orders = () => {
 
                         <button
                           onClick={() =>
-                            handleDelete(order.orderID || order._id)
+                            handleDeleteClick(order.orderID || order._id)
                           }
                           className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"
                         >
@@ -197,6 +206,14 @@ const Orders = () => {
           </table>
         </div>
       </div>
+
+      <DeleteModal 
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Delete Order"
+        message="Are you sure you want to delete this order? This action cannot be undone."
+      />
     </div>
   );
 };

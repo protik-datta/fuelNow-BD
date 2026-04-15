@@ -25,20 +25,25 @@ const Dashboard = () => {
   const { data: ordersData, isLoading: isLoadingOrders } = useOrders();
   const { data: emergenciesData, isLoading: isLoadingEmergencies } = useEmergencies();
 
-  const orders = Array.isArray(ordersData?.data) ? ordersData.data : [];
-  const emergencies = Array.isArray(emergenciesData?.data) ? emergenciesData.data : [];
+  const orders = useMemo(() => {
+    return Array.isArray(ordersData?.data) ? ordersData.data : [];
+  }, [ordersData]);
+
+  const emergencies = useMemo(() => {
+    return Array.isArray(emergenciesData?.data) ? emergenciesData.data : [];
+  }, [emergenciesData]);
 
   const stats = useMemo(() => {
     const totalOrders = orders.length;
     const pendingOrders = orders.filter(o => o.status === 'pending').length;
     const completedOrders = orders.filter(o => o.status === 'delivered').length;
-    
+
     // Revenue calculation (assuming totalCost exists on order)
     const revenue = orders.reduce((acc, curr) => acc + (Number(curr.totalCost || curr.productPrice || curr.remaining) || 0), 0);
 
     const totalEmergencies = emergencies.length;
     const pendingEmergencies = emergencies.filter(e => e.status === 'pending').length;
-    
+
     return {
       totalOrders,
       pendingOrders,
@@ -66,29 +71,29 @@ const Dashboard = () => {
 
       {/* Main Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard 
-          title="Total Orders" 
-          value={stats.totalOrders} 
-          icon={<FiShoppingCart className="w-7 h-7 text-blue-600" />} 
+        <StatCard
+          title="Total Orders"
+          value={stats.totalOrders}
+          icon={<FiShoppingCart className="w-7 h-7 text-blue-600" />}
           color="bg-blue-50"
         />
-        <StatCard 
-          title="Total Revenue" 
-          value={`৳${stats.revenue.toLocaleString()}`} 
-          icon={<FiTrendingUp className="w-7 h-7 text-green-600" />} 
+        <StatCard
+          title="Total Revenue"
+          value={`৳${stats.revenue.toLocaleString()}`}
+          icon={<FiTrendingUp className="w-7 h-7 text-green-600" />}
           color="bg-green-50"
         />
-        <StatCard 
-          title="Emergencies" 
-          value={stats.totalEmergencies} 
-          icon={<FiAlertTriangle className="w-7 h-7 text-red-600" />} 
+        <StatCard
+          title="Emergencies"
+          value={stats.totalEmergencies}
+          icon={<FiAlertTriangle className="w-7 h-7 text-red-600" />}
           color="bg-red-50"
           trend={12}
         />
-        <StatCard 
-          title="Pending Deliveries" 
-          value={stats.pendingOrders} 
-          icon={<FiClock className="w-7 h-7 text-orange-600" />} 
+        <StatCard
+          title="Pending Deliveries"
+          value={stats.pendingOrders}
+          icon={<FiClock className="w-7 h-7 text-orange-600" />}
           color="bg-orange-50"
         />
       </div>
@@ -100,7 +105,7 @@ const Dashboard = () => {
             <h3 className="text-lg font-semibold text-gray-900">Recent Orders</h3>
             <button className="text-sm text-orange-600 hover:text-orange-700 font-medium">View All</button>
           </div>
-          
+
           <div className="space-y-4">
             {orders.slice(0, 4).map((order) => (
               <div key={order._id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors">
@@ -148,7 +153,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-red-900">Emergency Fuel Request</p>
-                  <p className="text-xs text-red-700 mt-0.5 line-clamp-1">{emergency.location || 'Location not provided'}</p>
+                  <p className="text-xs text-red-700 mt-0.5 line-clamp-1">{emergency.locationText || 'Location not provided'}</p>
                   <p className="text-xs font-medium text-red-600 mt-2">{emergency.phone}</p>
                 </div>
               </div>
