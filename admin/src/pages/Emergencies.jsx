@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useEmergencies, useUpdateEmergencyStatus, useDeleteEmergency } from '../hooks/api.hooks';
 import DeleteModal from '../utils/DeleteModal';
 import { FiSearch, FiEdit2, FiTrash2, FiMapPin, FiPhone } from 'react-icons/fi';
@@ -13,21 +13,17 @@ const Emergencies = () => {
   
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [emergencyToDelete, setEmergencyToDelete] = useState(null);
+  const emergenciesArray = Array.isArray(emergenciesData?.data) ? emergenciesData.data : [];
+  const filteredEmergencies = emergenciesArray.filter(emergency => {
+    const matchesSearch =
+      emergency._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emergency.phone?.includes(searchTerm) ||
+      emergency.location?.toLowerCase().includes(searchTerm.toLowerCase());
 
-  const emergencies = Array.isArray(emergenciesData?.data) ? emergenciesData.data : [];
+    const matchesStatus = statusFilter === 'all' || emergency.status === statusFilter;
 
-  const filteredEmergencies = useMemo(() => {
-    return emergencies.filter(emergency => {
-      const matchesSearch =
-        emergency._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        emergency.phone?.includes(searchTerm) ||
-        emergency.location?.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesStatus = statusFilter === 'all' || emergency.status === statusFilter;
-
-      return matchesSearch && matchesStatus;
-    });
-  }, [emergencies, searchTerm, statusFilter]);
+    return matchesSearch && matchesStatus;
+  });
 
   const handleStatusChange = (emergencyId, newStatus) => {
     updateStatusMutation.mutate({ emergencyId, status: newStatus });

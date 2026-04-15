@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useOrders, useUpdateOrderStatus, useDeleteOrder } from '../hooks/api.hooks';
 import DeleteModal from '../utils/DeleteModal';
 import { FiSearch, FiEdit2, FiTrash2, FiMoreVertical } from 'react-icons/fi';
@@ -13,21 +13,17 @@ const Orders = () => {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState(null);
+  const ordersArray = Array.isArray(ordersData?.data) ? ordersData.data : [];
+  const filteredOrders = ordersArray.filter(order => {
+    const matchesSearch =
+      order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.customerPhone?.includes(searchTerm) ||
+      order.customerName?.toLowerCase().includes(searchTerm.toLowerCase());
 
-  const orders = Array.isArray(ordersData?.data) ? ordersData.data : [];
+    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
 
-  const filteredOrders = useMemo(() => {
-    return orders.filter(order => {
-      const matchesSearch =
-        order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.customerPhone?.includes(searchTerm) ||
-        order.customerName?.toLowerCase().includes(searchTerm.toLowerCase());
-
-      const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-
-      return matchesSearch && matchesStatus;
-    });
-  }, [orders, searchTerm, statusFilter]);
+    return matchesSearch && matchesStatus;
+  });
 
   const handleStatusChange = (orderId, newStatus) => {
     updateStatusMutation.mutate({ orderId, status: newStatus });
