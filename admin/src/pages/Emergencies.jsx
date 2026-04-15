@@ -62,8 +62,8 @@ const Emergencies = () => {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
+      <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-4">
+        <div className="relative w-full">
           <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
             type="text"
@@ -73,7 +73,8 @@ const Emergencies = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex gap-2 shrink-0">
+        
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
           {[
             "all",
             "pending",
@@ -85,7 +86,7 @@ const Emergencies = () => {
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors capitalize ${
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors capitalize whitespace-nowrap ${
                 statusFilter === status
                   ? "bg-gray-900 text-white"
                   : "bg-gray-50 text-gray-600 hover:bg-gray-100"
@@ -97,8 +98,8 @@ const Emergencies = () => {
         </div>
       </div>
 
-      {/* Emergencies Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      {/* Emergencies Table - Desktop View */}
+      <div className="hidden lg:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className="bg-gray-50 text-gray-600 font-medium border-b border-gray-100">
@@ -111,7 +112,6 @@ const Emergencies = () => {
                 <th className="px-6 py-4">Quantity</th>
                 <th className="px-6 py-4">Urgency</th>
                 <th className="px-6 py-4">Total Price</th>
-                <th className="px-6 py-4">Requested At</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
@@ -123,7 +123,6 @@ const Emergencies = () => {
                     key={emergency._id}
                     className="hover:bg-red-50/30 transition-colors"
                   >
-                    {/* Request ID */}
                     <td className="px-6 py-4">
                       <span className="font-mono font-medium text-gray-900">
                         #
@@ -131,42 +130,25 @@ const Emergencies = () => {
                           emergency._id.slice(-6).toUpperCase()}
                       </span>
                     </td>
-
-                    {/* Name */}
                     <td className="px-6 py-4 font-medium text-gray-900">
                       {emergency.name || "N/A"}
                     </td>
-
-                    {/* Phone */}
                     <td className="px-6 py-4">{emergency.phone || "N/A"}</td>
-
-                    {/* Location */}
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 max-w-xs truncate">
                       {emergency.locationText || "Unknown"}
                     </td>
-
-                    {/* Fuel Type */}
                     <td className="px-6 py-4">{emergency.fuelType}</td>
-
-                    {/* Quantity */}
                     <td className="px-6 py-4">{emergency.quantity} L</td>
-
-                    {/* Urgency */}
                     <td className="px-6 py-4">
-                      <span className="capitalize">{emergency.urgency}</span>
+                      <span className={`capitalize px-2 py-0.5 rounded text-xs font-medium ${
+                        emergency.urgency === 'immediate' ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'
+                      }`}>
+                        {emergency.urgency}
+                      </span>
                     </td>
-
-                    {/* Total Price */}
                     <td className="px-6 py-4 font-semibold text-gray-900">
                       ৳{emergency.totalPrice}
                     </td>
-
-                    {/* Requested At */}
-                    <td className="px-6 py-4 text-gray-500">
-                      {new Date(emergency.createdAt).toLocaleString()}
-                    </td>
-
-                    {/* Status */}
                     <td className="px-6 py-4">
                       <select
                         value={emergency.status || "pending"}
@@ -177,7 +159,7 @@ const Emergencies = () => {
                           )
                         }
                         disabled={updateStatusMutation.isPending}
-                        className="text-xs font-semibold px-2.5 py-1.5 rounded-full border-0 cursor-pointer focus:ring-2 focus:ring-red-500/20 appearance-none bg-no-repeat bg-right"
+                        className="text-xs font-semibold px-2.5 py-1.5 rounded-full border border-gray-200 cursor-pointer focus:ring-2 focus:ring-red-500/20"
                       >
                         <option value="pending">Pending</option>
                         <option value="accepted">Accepted</option>
@@ -186,21 +168,18 @@ const Emergencies = () => {
                         <option value="cancelled">Cancelled</option>
                       </select>
                     </td>
-
-                    {/* Actions */}
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end space-x-2">
-                        <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                        <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg">
                           <FiEdit2 className="w-4 h-4" />
                         </button>
-
                         <button
                           onClick={() =>
                             handleDeleteClick(
                               emergency.emergencyOrderID || emergency._id,
                             )
                           }
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"
                         >
                           <FiTrash2 className="w-4 h-4" />
                         </button>
@@ -210,10 +189,7 @@ const Emergencies = () => {
                 ))
               ) : (
                 <tr>
-                  <td
-                    colSpan="11"
-                    className="px-6 py-12 text-center text-gray-500"
-                  >
+                  <td colSpan="10" className="px-6 py-12 text-center text-gray-500">
                     No emergencies found
                   </td>
                 </tr>
@@ -221,6 +197,80 @@ const Emergencies = () => {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Emergencies Cards - Mobile/Tablet View */}
+      <div className="lg:hidden space-y-4">
+        {filteredEmergencies.length > 0 ? (
+          filteredEmergencies.map((emergency) => (
+            <div key={emergency._id} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="flex items-center space-x-2">
+                    <p className="font-mono text-xs font-medium text-gray-500">
+                      #{emergency.emergencyOrderID?.slice(-6) || emergency._id.slice(-6).toUpperCase()}
+                    </p>
+                    <span className={`capitalize px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
+                      emergency.urgency === 'immediate' ? 'bg-red-100 text-red-600' : 'bg-orange-100 text-orange-600'
+                    }`}>
+                      {emergency.urgency}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-gray-900 mt-1">{emergency.name || "N/A"}</h4>
+                  <div className="flex items-center text-sm text-gray-500 mt-0.5">
+                    <FiPhone className="w-3 h-3 mr-1" />
+                    {emergency.phone || "N/A"}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold text-red-600">৳{emergency.totalPrice}</p>
+                  <p className="text-xs text-gray-500 mt-1">{emergency.fuelType} • {emergency.quantity}L</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start p-3 bg-red-50/30 rounded-xl text-sm text-gray-700">
+                <FiMapPin className="w-4 h-4 mr-2 mt-0.5 text-red-400 shrink-0" />
+                <p className="line-clamp-2">{emergency.locationText || "Unknown"}</p>
+              </div>
+
+              <div className="flex items-center justify-between pt-2">
+                <select
+                  value={emergency.status || "pending"}
+                  onChange={(e) =>
+                    handleStatusChange(
+                      emergency.emergencyOrderID || emergency._id,
+                      e.target.value,
+                    )
+                  }
+                  disabled={updateStatusMutation.isPending}
+                  className="text-xs font-semibold px-3 py-2 rounded-full border border-gray-200 bg-white cursor-pointer focus:ring-2 focus:ring-red-500/20"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="accepted">Accepted</option>
+                  <option value="on_the_way">On the Way</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+
+                <div className="flex items-center space-x-2">
+                  <button className="p-2.5 text-blue-600 bg-blue-50 rounded-xl">
+                    <FiEdit2 className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(emergency.emergencyOrderID || emergency._id)}
+                    className="p-2.5 text-red-600 bg-red-50 rounded-xl"
+                  >
+                    <FiTrash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white p-12 rounded-2xl border border-dashed border-gray-200 text-center text-gray-500">
+            No emergencies found
+          </div>
+        )}
       </div>
       
       <DeleteModal 

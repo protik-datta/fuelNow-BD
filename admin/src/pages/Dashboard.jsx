@@ -70,74 +70,74 @@ const Dashboard = () => {
       </div>
 
       {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <StatCard
           title="Total Orders"
           value={stats.totalOrders}
-          icon={<FiShoppingCart className="w-7 h-7 text-blue-600" />}
+          icon={<FiShoppingCart className="w-6 h-6 sm:w-7 sm:h-7 text-blue-600" />}
           color="bg-blue-50"
         />
         <StatCard
           title="Total Revenue"
           value={`৳${stats.revenue.toLocaleString()}`}
-          icon={<FiTrendingUp className="w-7 h-7 text-green-600" />}
+          icon={<FiTrendingUp className="w-6 h-6 sm:w-7 sm:h-7 text-green-600" />}
           color="bg-green-50"
         />
         <StatCard
           title="Emergencies"
           value={stats.totalEmergencies}
-          icon={<FiAlertTriangle className="w-7 h-7 text-red-600" />}
+          icon={<FiAlertTriangle className="w-6 h-6 sm:w-7 sm:h-7 text-red-600" />}
           color="bg-red-50"
           trend={12}
         />
         <StatCard
           title="Pending Deliveries"
           value={stats.pendingOrders}
-          icon={<FiClock className="w-7 h-7 text-orange-600" />}
+          icon={<FiClock className="w-6 h-6 sm:w-7 sm:h-7 text-orange-600" />}
           color="bg-orange-50"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
         {/* Recent Orders Overview */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-gray-900">Recent Orders</h3>
-            <button className="text-sm text-orange-600 hover:text-orange-700 font-medium">View All</button>
+            <button className="text-sm text-orange-600 hover:text-orange-700 font-medium whitespace-nowrap">View All</button>
           </div>
 
           <div className="space-y-4">
-            {orders.slice(0, 4).map((order) => (
+            {orders.slice(0, 5).map((order) => (
               <div key={order._id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors">
-                <div className="flex items-center space-x-4">
-                  <div className="bg-orange-100 p-3 rounded-xl text-orange-600">
+                <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
+                  <div className="bg-orange-100 p-2.5 sm:p-3 rounded-xl text-orange-600 shrink-0">
                     <MdLocalGasStation className="w-5 h-5" />
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-900 text-sm">#{order._id.slice(-6).toUpperCase()}</p>
-                    <p className="text-xs text-gray-500">{order.fuelType} • {order.quantity}L</p>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-gray-900 text-sm truncate">#{order.orderID?.slice(-6) || order._id.slice(-6).toUpperCase()}</p>
+                    <p className="text-xs text-gray-500 truncate">{order.fuelType} • {order.quantity}L</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium capitalize ${
+                <div className="text-right shrink-0 ml-4">
+                  <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium capitalize ${
                     order.status === 'delivered' ? 'bg-green-100 text-green-700' :
                     order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
                     'bg-gray-100 text-gray-700'
                   }`}>
                     {order.status?.replace('_', ' ')}
                   </span>
-                  <p className="text-xs font-semibold text-gray-900 mt-1">৳{order.totalCost || order.remaining || order.productPrice}</p>
+                  <p className="text-xs sm:text-sm font-semibold text-gray-900 mt-1">৳{order.totalCost || order.remaining || order.productPrice}</p>
                 </div>
               </div>
             ))}
             {orders.length === 0 && (
-              <div className="text-center text-gray-500 py-4 text-sm">No recent orders found.</div>
+              <div className="text-center text-gray-500 py-8 text-sm italic">No recent orders found.</div>
             )}
           </div>
         </div>
 
         {/* Action Needed (Emergencies) */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-gray-900">Action Needed</h3>
             <span className="bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full text-xs font-semibold">
@@ -146,23 +146,26 @@ const Dashboard = () => {
           </div>
 
           <div className="space-y-4">
-            {emergencies.filter(e => e.status !== 'delivered' && e.status !== 'cancelled').slice(0, 4).map((emergency) => (
+            {emergencies.filter(e => e.status !== 'delivered' && e.status !== 'cancelled').slice(0, 5).map((emergency) => (
               <div key={emergency._id} className="flex items-start space-x-3 p-3 bg-red-50/50 rounded-xl border border-red-100">
                  <div className="bg-white p-2 rounded-full text-red-500 shadow-sm shrink-0">
                   <FiAlertTriangle className="w-4 h-4" />
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-red-900">Emergency Fuel Request</p>
-                  <p className="text-xs text-red-700 mt-0.5 line-clamp-1">{emergency.locationText || 'Location not provided'}</p>
-                  <p className="text-xs font-medium text-red-600 mt-2">{emergency.phone}</p>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-red-900 uppercase text-[10px] tracking-wider mb-0.5">Emergency Request</p>
+                  <p className="text-sm font-bold text-gray-900 line-clamp-1">{emergency.name || 'Anonymous'}</p>
+                  <p className="text-xs text-red-700 mt-1 line-clamp-2">{emergency.locationText || 'Location not provided'}</p>
+                  <p className="text-xs font-bold text-red-600 mt-2">{emergency.phone}</p>
                 </div>
               </div>
             ))}
             {emergencies.filter(e => e.status !== 'delivered' && e.status !== 'cancelled').length === 0 && (
-              <div className="flex flex-col items-center justify-center py-6 text-gray-500">
-                <FiCheckCircle className="w-10 h-10 text-green-400 mb-2" />
-                <p className="text-sm font-medium">All caught up!</p>
-                <p className="text-xs">No pending emergencies.</p>
+              <div className="flex flex-col items-center justify-center py-10 text-gray-500">
+                <div className="bg-green-50 p-4 rounded-full mb-4">
+                  <FiCheckCircle className="w-10 h-10 text-green-500" />
+                </div>
+                <p className="text-sm font-semibold text-gray-900">All caught up!</p>
+                <p className="text-xs mt-1">No pending emergencies to handle.</p>
               </div>
             )}
           </div>
